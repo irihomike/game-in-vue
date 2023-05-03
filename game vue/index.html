@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSSS/app.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://unpkg.com/vue@next"></script>
+    <title>Game conqueror</title>
+</head>
+<body class="body">
+    <div class="wrapper">
+        <header>
+        <h2> Dragon conqueror</h2>
+    </header>
+    </div>
+
+<div id="game">
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="health">   
+                <div class="health-bar" :style="warriorHealthBar">
+                    <span class="hp-percent">{{ warriorHealth %}}</span>
+
+                </div>
+            </div>
+            <p class="text-center">warrior</p>
+            <div class="img-container">
+                <img src="./gifs/warrior1.gif" alt="warrior">
+            </div>
+          </div>
+          <div class="col">
+          <div class="health">   
+              <div class="health-bar" :style="dragonHealthBar">
+                  <span class="hp-percent">{{ dragonHealth }} %</span>
+
+              </div>
+          </div>
+          <p class="text-center">Dragon</p>
+          <div class="img-container">
+              <img src="./gifs/dragon1.gif" alt="Dragon">
+          </div>
+        </div>
+        <div class="row">
+            <div class="col controls" >
+                <button class="controls-icon attack" @click="attackdragon" id="me">
+                    <img src="./img/attack_icon.svg" alt="attack">
+                </button>
+                <button class="controls-icon attack" id="you" @click="specialAttack" :disabled="numOfspecialAttack === 0">
+                    <img src="./img/special_attack.svg" alt="specialAttack">
+                </button>
+                <button class="control-icon" @click="heal" :disabled="numOfheal === 0">
+                 <img src="./img/heal_icon.png" alt="heal">
+                 <span class="num-of-attempt"> {{ numOfHeal }} </span>
+                </button>
+                <button class="controls-icon" id="we" @click="forfeit">
+                    <img src="./img/surrender_icon.png" alt="give-uo">
+                </button>
+            </div>
+            </div>
+            
+            
+        </div>
+        <div class="row mt-5">
+            <div class="container">
+                <h4 class="text-center">BattleLogs</h4>
+                <ul class="col-md-5 logs">
+                    <li v-for="logMessage in BattleLogMessages" :key="log" class="text-center">
+                        <span :class="{'warrior' : logMessage.attacker === 'warrior', 'dragon' : 'logMessage.attacker === 'dragon'}">
+                            <img src="./gifs/warrior1.gif" alt="warrior" v-if="logMessage.attacker === 'warrior' " class="img-icon">
+                            <img src="./gifs/dragon1.gif" alt="dragon" v-else class="img-icon">
+
+                        </span>
+                        <span v-if="logMessage.actionType ==='heal'">
+                            heals himself for <div class="log-heal">{{ logMessage.actionValue} of damage}</div>
+
+                        </span>
+                        <span v-else-if="logMessage.actionType === 'special-attack'">
+                        use special attack and deals <span class="log--damage">
+                         {{ logMessage.actionValue}} of damage 
+                        </span>
+                        </span>
+                        
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="overlap" v-if="winner">
+        <div class="winner">
+            <div class="text-center">
+                <h3>Game Over!</h3>
+            
+            <h4 v-if="winner === 'dragon'"> you lose!</h4>
+            <h4 v-else-if="winner === 'warrior'"> you win!</h4>
+            <h4 v-if="winner === 'draw'"> it's a Draw!</h4>
+            <button class="btn start-btn mt-4" @click="startFight">Battle Again</button>
+            
+          </div>
+        </div>
+    </div>
+</div>
+<footer class="text-center">
+    Copyright &copy; 2028 - mike development company
+</footer>
+<script src="js/main.js "></script>
+
+</body>
+</html>
